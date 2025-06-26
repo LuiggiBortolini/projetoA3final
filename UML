@@ -1,0 +1,84 @@
+@startuml
+
+abstract class Profissional {
+    - nome: String
+    - especialidade: String
+    - registro: String
+    + getNome(): String
+    + atenderPaciente(paciente: Paciente): void
+}
+
+class Psicologo {
+    + Psicologo(nome: String, registro: String)
+}
+
+class Psiquiatra {
+    + Psiquiatra(nome: String, registro: String)
+}
+
+class Paciente {
+    - nome: String
+    - idade: int
+    - cpf: String
+    + getNome(): String
+    + getIdade(): int
+    + getCpf(): String
+}
+
+class Consulta {
+    - paciente: Paciente
+    - profissional: Profissional
+    - preco: double
+    - data: String
+    + realizarConsulta(): void
+    + getPreco(): double
+    + getPaciente(): Paciente
+    + getProfissional(): Profissional
+}
+
+class GerenciadorProfissionais {
+    - profissionais: ArrayList<Profissional>
+    + adicionarProfissional(profissional: Profissional): void
+    + listarProfissionais(): ArrayList<Profissional>
+}
+
+class GerenciadorPacientes {
+    - pacientes: ArrayList<Paciente>
+    + adicionarPaciente(paciente: Paciente): void
+    + listarPacientes(): ArrayList<Paciente>
+}
+
+class GerenciadorConsultas {
+    - consultas: ArrayList<Consulta>
+    + adicionarConsulta(consulta: Consulta): void
+    + listarConsultas(): void
+    + editarConsulta(index: int, novaConsulta: Consulta): void
+    + removerConsulta(index: int): void
+    + removerConsulta(consulta: Consulta): void
+    + getConsultas(): ArrayList<Consulta>
+    + calcularTotal(): double
+}
+
+class Carrinho {
+    - consultas: ArrayList<Consulta>
+    + adicionarConsulta(consulta: Consulta): void
+    + listarConsultas(): void
+    + getConsultas(): ArrayList<Consulta>
+    + calcularTotal(): double
+    + escolherPagamento(gerenciadorConsultas: GerenciadorConsultas, consulta: Consulta): void
+}
+
+interface IAtendimento {
+    + atenderPaciente(paciente: Paciente): void
+}
+
+Profissional <|-- Psicologo
+Profissional <|-- Psiquiatra
+Paciente "1" -- "0..*" Consulta : "um para muitos"
+Consulta "1" -- "1" Profissional : "um para um"
+GerenciadorProfissionais "1" -- "0..*" Profissional : "um para muitos"
+GerenciadorPacientes "1" -- "0..*" Paciente : "um para muitos"
+GerenciadorConsultas "1" -- "0..*" Consulta : "um para muitos"
+Carrinho "1" -- "0..*" Consulta
+
+@enduml
